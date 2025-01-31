@@ -1,0 +1,53 @@
+{
+  "name": "electron-todolist",
+  "version": "0.1.0",
+  "private": true,
+  "description": "memo",
+  "author": "Ring",
+  "license": "ISC",
+  "scripts": {
+    "start": "vue-cli-service electron:serve",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
+  },
+  "main": "background.js",
+  "dependencies": {
+    "@imengyu/vue3-context-menu": "^1.4.4",
+    "concurrently": "^9.1.0",
+    "core-js": "^3.8.3",
+    "element-plus": "^2.9.3",
+    "fsevents": "^2.3.3",
+    "pinia": "^2.3.0",
+    "pinia-plugin-persistedstate": "^4.2.0",
+    "vue": "^3.2.13",
+    "vue-contextmenu": "^1.5.11",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.6.0",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "autoprefixer": "^10.4.20",
+    "electron": "^16.2.4",
+    "electron-builder": "^22.14.13",
+    "electron-devtools-installer": "^3.1.0",
+    "postcss": "^8.4.49",
+    "sass": "^1.32.7",
+    "sass-loader": "^12.0.0",
+    "tailwindcss": "^3.4.16",
+    "vue-cli-plugin-electron-builder": "~2.1.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}
