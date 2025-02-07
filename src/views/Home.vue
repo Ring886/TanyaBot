@@ -16,27 +16,35 @@
       <hr class="mx-5 border-gray-300">
       
 
+      <div class="flex flex-col chat">
+        <BotSaying class="self-start"/>
+        <UserSaying class="self-end"/>
+        <BotSaying class="self-start"/>
+        <UserSaying class="self-end"/>
+      </div>
 
-      <div v-if="selectedItem" class="p-5" :style="`height: ${innerHeight - 100}px;`">
-        <!-- 可编辑标题 -->
+      <!-- <div v-if="selectedItem" class="p-5" :style="`height: ${innerHeight - 100}px;`">
         <h2 class="text-2xl font-bold">
           <input v-model="selectedItem.title" type="text"
             class="w-full bg-transparent border-b-2 border-gray-300 p-1 text-2xl font-bold outline-none" ref="TitleGetFocus"/>
         </h2>
-
-        <!-- 可编辑文本内容 -->
-        <!-- <p class="text-lg">
-          <textarea v-model="selectedItem.text"
-            class="w-full bg-transparent border-b-2 border-gray-300 p-1 text-lg outline-none" rows="12" 
-            @blur="changeText"></textarea>
-        </p> -->
-        <!-- <div :style="`min-height: ${innerHeight - 40}px;`"> -->
-       
         <textarea v-model="selectedItem.text" class="text-lg bg-transparent border-b-2 border-gray-300 p-1 text-lg outline-none w-full h-full"  
       @input="changeText" ref="TextGetFocus"></textarea>
-  
-      </div>
+      </div> -->
 
+
+      <!-- <hr class="m-5 border-gray-300"> -->
+      <!-- <div class="h-80 bg-red-200 m-4 rounded-xl"></div> -->
+      <div class="p-3 flex items-center input">
+        <textarea
+          type="text"
+          class="flex-1 p-2 h-12 rounded-xl border-gray-500 shadow-lg 
+            focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="输入消息..."></textarea>
+        <button class="ml-3 bg-blue-500 text-white p-2 rounded-full">
+          🚀
+        </button>
+      </div>
     </main>
   </div>
 </template>
@@ -46,6 +54,8 @@
   import { useMemoStore } from '../store/index'
   import Aside from "../components/Aside.vue"
   import Setting from "../components/Setting.vue"
+  import BotSaying from '@/components/BotSaying.vue'
+  import UserSaying from '@/components/UserSaying.vue'
 
   const innerHeight = ref(window.innerHeight)
   window.addEventListener('resize', () => {
@@ -129,19 +139,34 @@
     /* position: absolute;
     top: 0; */
   }
-  input, textarea {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    resize: none;
-    caret-color: #FF6347;
-  }
-  input:focus, textarea:focus {
-    border-bottom-color: #4A90E2;
-    /* 修改聚焦时边框的颜色 */
-  }
   .aside {
     max-width: 100%;
     /* width: auto; */
   }
+
+  .chat {
+    margin-bottom: 10px;
+  }
+
+  /* input {
+    height: 100px;
+  } */
+  /* input::-webkit-input-placeholder {
+    position: relative;
+    top: -1.7em;
+  } */
+  textarea {
+    resize: none;
+    height: 85px;
+  }
+  .input {
+    position: sticky;
+    bottom: 0;
+  }
+  ::-webkit-scrollbar{width:8px;height:4px;}
+  ::-webkit-scrollbar-button{width:8px;height:0}
+  ::-webkit-scrollbar-track{background:0 0; margin-top: 10px;margin-bottom: 10px;}
+  ::-webkit-scrollbar-thumb{background:#8e9194;-webkit-transition:.3s;transition:.3s;border-radius: 5px;}
+  ::-webkit-scrollbar-thumb:hover{background-color:#646769}
+  ::-webkit-scrollbar-thumb:active{background-color:#555758}
 </style>
