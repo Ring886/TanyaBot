@@ -8,7 +8,7 @@
 
 
     <!-- 右侧栏：主要内容区域 -->
-    <main class="flex-1 bg-gray-100 overflow-auto relative h-screen" >
+    <main class="flex-1 bg-gray-100 overflow-auto relative h-screen" ref="mainContainer">
       <header class="text-xl py-2 px-5 h-12">
         <a @click="toggleSidebar" class="text-2xl absolute left-4 cursor-pointer hover:bg-gray-300">📑</a>
         <a @click="newText" class="text-2xl absolute cursor-pointer right-5 hover:bg-gray-300 ">📝</a>
@@ -16,11 +16,11 @@
       <hr class="mx-5 border-gray-300">
       
 
-      <div class="flex flex-col chat">
-        <BotSaying class="self-start"/>
+      <div class="flex flex-col chat" ref="chatContainer">
+        <!-- <BotSaying class="self-start"/>
         <UserSaying class="self-end"/>
         <BotSaying class="self-start"/>
-        <UserSaying class="self-end"/>
+        <UserSaying class="self-end"/> -->
       </div>
 
       <!-- <div v-if="selectedItem" class="p-5" :style="`height: ${innerHeight - 100}px;`">
@@ -35,13 +35,13 @@
 
       <!-- <hr class="m-5 border-gray-300"> -->
       <!-- <div class="h-80 bg-red-200 m-4 rounded-xl"></div> -->
-      <div class="p-3 flex items-center input">
+      <div class="p-3 flex items-center input" ref="inputContainer">
         <textarea
-          type="text"
+          type="text" v-model="message" ref="textarea" 
           class="flex-1 p-2 h-12 rounded-xl border-gray-500 shadow-lg 
             focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="输入消息..."></textarea>
-        <button class="ml-3 bg-blue-500 text-white p-2 rounded-full">
+        <button class="ml-3 bg-blue-500 text-white p-2 rounded-full" @click="SendMessage">
           🚀
         </button>
       </div>
@@ -50,12 +50,21 @@
 </template>
 
 <script setup>
-  import { ref, onUnmounted, watch } from 'vue'
+  import { ref, onMounted, onUnmounted, watch, createApp, nextTick, watchEffect } from 'vue'
+  
   import { useMemoStore } from '../store/index'
   import Aside from "../components/Aside.vue"
   import Setting from "../components/Setting.vue"
   import BotSaying from '@/components/BotSaying.vue'
   import UserSaying from '@/components/UserSaying.vue'
+
+
+  const message = ref('')
+  const mainContainer = ref(null)
+  const chatContainer = ref(null)
+  const textarea = ref(null)
+  const inputContainer = ref(null)
+
 
   const innerHeight = ref(window.innerHeight)
   window.addEventListener('resize', () => {
@@ -111,6 +120,57 @@
     }
   }
 
+  const SendMessage = (message) => {
+    const container = document.createElement('div')
+    container.classList.add('self-end') 
+
+    chatContainer.value.appendChild(container)
+
+    // 4. 使用 Vue 的 createApp 挂载 UserSaying 组件
+    const app = createApp(UserSaying, { message })
+    app.mount(container)
+    // scrollToBottom()
+    nextTick(() => {
+      scrollToBottom()
+    })
+  };
+  // 滚动到底部的函数
+  const scrollToBottom = () => {
+    nextTick(() => { // 确保 DOM 更新完成
+      console.log(mainContainer.value.scrollHeight)
+      if (chatContainer.value) {
+        mainContainer.value.scrollTo({
+          top: mainContainer.value.scrollHeight,
+          behavior: 'smooth',
+        })
+      }
+    })
+  }
+
+  const LoadingAndReply = (message) => {
+    const container = document.createElement('div')
+    container.classList.add('self-start')
+    chatContainer.value.appendChild(container)
+    const app = createApp(BotSaying, { message })
+    app.mount(container)
+  }
+
+
+
+  onMounted(() => {
+    if(textarea.value) {
+      textarea.value.addEventListener('keydown', async(event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          SendMessage(message.value)
+          LoadingAndReply(message.value)
+          // console.log(message.value)
+          message.value = ''
+        }
+      })
+    }
+  })
+
   onUnmounted(() => {
     // console.log('hhh')
     changeText()
@@ -130,6 +190,17 @@
     }
   }, {deep:true})
 
+  watchEffect(() => {
+    if (inputContainer.value) {
+      inputContainer.value.style.width = `calc(100% - ${width.value}px)`
+    }
+  })
+
+
+  
+  
+
+
 
 </script>
 
@@ -145,22 +216,20 @@
   }
 
   .chat {
-    margin-bottom: 10px;
+    margin-bottom: 120px;
   }
 
-  /* input {
-    height: 100px;
-  } */
-  /* input::-webkit-input-placeholder {
-    position: relative;
-    top: -1.7em;
-  } */
   textarea {
     resize: none;
     height: 85px;
   }
+
+  main {
+    width: 100%;
+  }
   .input {
-    position: sticky;
+    width: calc(100% - 200px); /* 计算子盒子的宽度 */
+    position: fixed;
     bottom: 0;
   }
   ::-webkit-scrollbar{width:8px;height:4px;}

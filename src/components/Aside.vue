@@ -4,7 +4,7 @@
     :style="{ width: sidebarWidth + 'px' }" 
     style="user-select: none;">
     <div class="bg-gray-800 fixed left-0 top-0 h-12" :style="{ width: sidebarWidth + 'px'}"></div>
-    <h1 class="text-2xl font-bold mb-4 mt-4">随心记</h1>
+    <h1 class="text-2xl font-bold mb-4 mt-4">传统十六道AI</h1>
     <ul class="space-y-2">
       <!-- 循环显示备忘录 -->
       <li v-for="memo in memoStore.memos" :key="memo.id"
