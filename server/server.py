@@ -35,7 +35,8 @@ def invoke_llm(message):
       "model": "gpt-4o-mini",
       "messages": [{"role": "user", "content": message}],
       "temperature": 0.7,
-      "max_tokens": 2048,  # 设置最大 tokens 数量，可以根据需要调整
+      "max_tokens": 2048,  # 设置最大 tokens 数量，可以根据需要调整，
+      # "stream": True
   }
 
   # 发送 POST 请求
