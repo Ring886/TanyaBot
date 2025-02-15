@@ -40,3 +40,16 @@
 
 # 0.3 提交于2025/2/11
 - 实现终端流式回复,目前界面的流式回复还无法实现
+
+
+# 0.4 提交于2025/2/15
+- 在`Mac`上跑项目时遇到了`cors`问题,上网找了很多解决办法,无济于事,控制台报错的位置显示`await fetch()`这一句出了问题,然后又去postman上测试,本抱着试一试的心态,把`fetch`的`url`从`http://localhost:5000/api/chat`改成`http://127.0.0.1:5000/api/chat`,没想到真的出来了,我是真不知道原理是什么,在`Windows`上`localhost`就可以
+- 还有个问题
+  ``` python
+  # 原写法
+  @app.route('/api/chat', methods=['POST'])
+  # 照网上和chat改后
+  @app.route('/api/chat', methods=['POST', 'OPTION'])
+  ```
+  经过实践,这纯粹扯犊子,由于没有系统学习过`python`,所以不知道原理,但是通过`devtools`发现如果加了`OPTION`,发送请求会出现`415错误`,而且是针对`OPTION`的,具体为`媒体类型错误`我记得.
+- 这段时间就是在改`Mac`上的报错,以便后续项目的进行

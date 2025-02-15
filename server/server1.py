@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import requests
@@ -5,9 +7,14 @@ import json
 
 app = Flask(__name__)
 CORS(app)
+# CORS(app, resources={r"/api/*": {"origins": "http://localhost:8080"}})
+# CORS(app, origins='http://localhost:8080', methods=['GET', 'POST', 'OPTIONS'])
+
+
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
+  print('进入了chat函数')
   user_input = request.json.get('message')
   # user_input = '苹果的好处'
   return Response(invoke_llm(user_input), content_type='text/plain; charset=utf-8')
@@ -51,4 +58,5 @@ if __name__ == '__main__':
   # test_input = "苹果的好处"  # 直接测试的文本
   # print("AI 回答：")
   # invoke_llm(test_input)  # 直接在终端运行
+  # print('执行Python')
   app.run(debug=True, threaded=True)
