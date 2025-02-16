@@ -53,3 +53,27 @@
   ```
   经过实践,这纯粹扯犊子,由于没有系统学习过`python`,所以不知道原理,但是通过`devtools`发现如果加了`OPTION`,发送请求会出现`415错误`,而且是针对`OPTION`的,具体为`媒体类型错误`我记得.
 - 这段时间就是在改`Mac`上的报错,以便后续项目的进行
+
+
+
+
+
+# 0.5 提交于2025/2/16
+- 实现打字机式回复,是在后端修改了
+  ``` python
+  if chunk:
+    yield f"{chunk}"  # **用 yield 返回数据**
+  ```
+  然后前端直接
+  ``` javascript
+  response.value += chunk
+  ``` 
+- 解决了换行问题,具体看`BotSaying`组件
+  `style`实现前端界面换行(遇到\n,读取转义字符)
+  ``` vue
+  <p class="chatbox" style="white-space: pre-wrap;">{{ response }}</p>
+  ```
+- 待完善
+  1. AI回复时保持滚动条始终在底部
+  2. 发送消息防抖
+  3. 聊天记录储存

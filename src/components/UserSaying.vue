@@ -36,7 +36,7 @@
   .chatbox {
     margin-right: 12px;
     padding: 5px;
-    max-width: 16rem;
+    max-width: 32rem;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(95, 93, 93, 0.2); /* 阴影 */
   }

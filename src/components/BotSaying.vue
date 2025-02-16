@@ -12,7 +12,8 @@
       风水轮流转,悲喜各一半<br>
       这是今天的第六遍
     </p> -->
-    <p class="chatbox">{{ response }}</p>
+    <p class="chatbox" style="white-space: pre-wrap;">{{ response }}</p>
+    <!-- white-space: pre-wrap;很关键 -->
   </div>
 
 
@@ -42,38 +43,51 @@
         throw new Error('网络响应不正常');
       }
 
+      response.value = ''
       // 读取流式响应
       const reader = res.body.getReader();
       const decoder = new TextDecoder("utf-8");
       let accumulatedText = "";
 
       while (true) {
-        console.log('1')
+        // console.log('1')
         const { done, value } = await reader.read();
-        console.log('2')
+        // console.log('2')
         if (done) break;
-        console.log('3')
+        // console.log('3')
         let chunk = decoder.decode(value, { stream: true }); // 解码当前数据块
         accumulatedText += chunk; // 累积文本
-        console.log('4')
-        console.log("流式数据:", chunk);
+        // console.log('4')
+        console.log("流式数据:", JSON.stringify(chunk));
+        response.value += chunk
+        
+        // response.value += chunk.replace(/\\n/g, '\n'); // 处理转义的 \n
 
         // 处理 OpenAI API 流式响应（data: JSON 格式）
-        const lines = accumulatedText.split("\n"); // 按行分割
-        accumulatedText = lines.pop(); // 可能是不完整的 JSON，暂存等待下一批数据
+        // const lines = accumulatedText.split("\n"); // 按行分割
+        // accumulatedText = lines.pop(); // 可能是不完整的 JSON，暂存等待下一批数据
 
-        for (let line of lines) {
-          console.log('进入循环')
-          if (line.startsWith("data: ")) {
-            try {
-              let json = JSON.parse(line.substring(6)); // 解析 JSON
-              let textChunk = json.choices[0].delta.content || "";
-              response.value += textChunk; // 更新 UI 响应内容
-            } catch (error) {
-              console.error("JSON 解析失败:", error);
-            }
-          }
-        }
+        // for (let line of lines) {
+        //   console.log('进入循环')
+        //   // if (line.startsWith("data: ")) {
+        //   //   try {
+        //   //     let json = JSON.parse(line.substring(6)); // 解析 JSON
+        //   //     let textChunk = json.choices[0].delta.content || "";
+        //   //     response.value += textChunk; // 更新 UI 响应内容
+        //   //   } catch (error) {
+        //   //     console.error("JSON 解析失败:", error);
+        //   //   }
+        //   // }
+        //   try {
+        //     // console.log(typeof line)
+        //     // let json = JSON.parse(line); // 解析 JSON
+        //     // console.log("json:", json)
+        //     // let textChunk = json.choices[0].delta.content || "";
+        //     response.value += line; // 更新 UI 响应内容
+        //   } catch (error) {
+        //     console.error("JSON 解析失败:", error);
+        //   }
+        // }
       }
 
       console.log("流式响应完成");
@@ -96,7 +110,7 @@
   .chatbox {
     margin-left: 12px;
     padding: 5px;
-    max-width: 16rem;
+    max-width: 32rem;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(95, 93, 93, 0.2); /* 阴影 */
   }

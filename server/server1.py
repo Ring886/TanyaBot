@@ -17,7 +17,8 @@ def chat():
   print('进入了chat函数')
   user_input = request.json.get('message')
   # user_input = '苹果的好处'
-  return Response(invoke_llm(user_input), content_type='text/plain; charset=utf-8')
+  # return Response(invoke_llm(user_input), content_type='text/plain; charset=utf-8')
+  return Response(invoke_llm(user_input), content_type='text/event-stream')  # **正确返回流式数据**
 
 def invoke_llm(message):
   url = "https://api2.aigcbest.top/v1/chat/completions"
@@ -47,6 +48,7 @@ def invoke_llm(message):
             json_data = json.loads(line[6:])  # 去掉前面的 "data: " 并解析 JSON
             chunk = json_data.get('choices', [{}])[0].get('delta', {}).get('content', '')
             if chunk:
+              yield f"{chunk}"  # **用 yield 返回数据**
               print(chunk, end='', flush=True)  # 逐字输出
           except json.JSONDecodeError:
             continue

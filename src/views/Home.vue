@@ -41,7 +41,7 @@
           class="flex-1 p-2 h-12 rounded-xl border-gray-500 shadow-lg 
             focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="输入消息..."></textarea>
-        <button class="ml-3 bg-blue-500 text-white p-2 rounded-full" @click="SendMessage">
+        <button class="ml-3 bg-blue-500 text-white p-2 rounded-full" @click="clickButton">
           🚀
         </button>
       </div>
@@ -120,6 +120,13 @@
     }
   }
 
+  const clickButton = () => {
+    SendMessage(message.value)
+    LoadingAndReply(message.value)
+    // console.log(message.value)
+    message.value = ''
+  }
+
   const SendMessage = (message) => {
     const container = document.createElement('div')
     container.classList.add('self-end') 
@@ -166,6 +173,9 @@
           LoadingAndReply(message.value)
           // console.log(message.value)
           message.value = ''
+          // while(true) {
+          //   scrollToBottom()
+          // }
         }
       })
     }
